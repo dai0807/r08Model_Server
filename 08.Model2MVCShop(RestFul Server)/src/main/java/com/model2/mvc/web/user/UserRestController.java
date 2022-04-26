@@ -34,7 +34,14 @@ public class UserRestController {
 	@Qualifier("userServiceImpl")
 	private UserService userService;
 	//setter Method 구현 않음
-		
+	
+	@Value("#{commonProperties['pageUnit']}")
+	int pageUnit;
+	@Value("#{commonProperties['pageSize']}")
+	int pageSize;
+	
+	
+	
 	public UserRestController(){
 		System.out.println(this.getClass());
 	}
@@ -152,6 +159,28 @@ public class UserRestController {
 //		 return map ;
 //	}
 //	
+	@RequestMapping( value="json/listUser")
+	public Map<String, Object> listUser_Codehaus( @RequestBody Search search  ) throws Exception {
 	
+	//	 @ModelAttribute("search") Search search
+		System.out.println("/user/listUser : GET / POST");
+		
+		if(search.getCurrentPage() ==0 ){
+			search.setCurrentPage(1);
+		}
+		search.setPageSize(pageSize);
+		
+ 		
+		Map<String , Object> map=userService.getUserList(search);
+		Page resultPage = new Page( search.getCurrentPage(), ((Integer)map.get("totalCount")).intValue(), pageUnit, pageSize);
+		System.out.println(resultPage);
+		
+		
+		map.put("list", map.get("list")) ;
+		map.put("resultPage", resultPage);
+		map.put("search", search);
+	
+		 return map ;
+	}
 	
 }

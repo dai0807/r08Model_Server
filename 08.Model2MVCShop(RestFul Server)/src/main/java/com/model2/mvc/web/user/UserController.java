@@ -174,5 +174,8 @@ public class UserController {
 		model.addAttribute("search", search);
 		
 		return "forward:/user/listUser.jsp";
+	
 	}
+	
+	
 }
