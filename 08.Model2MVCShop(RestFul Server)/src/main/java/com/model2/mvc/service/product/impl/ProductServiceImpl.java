@@ -42,7 +42,7 @@ public class ProductServiceImpl implements ProductService{
 
 	 	public Product getProduct(int prodNo) throws Exception {
 	  		System.out.println("서비스 다오 getProduct  :: " + prodNo );
-	  		System.out.println( "나와라 " +productDao.getProduct(prodNo));
+	  	 System.out.println( "나와라 " +productDao.getProduct(prodNo));
 			return productDao.getProduct(prodNo);
 		}
 

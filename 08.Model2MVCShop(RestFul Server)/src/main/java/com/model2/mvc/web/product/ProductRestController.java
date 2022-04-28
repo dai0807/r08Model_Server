@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -28,7 +29,6 @@ import com.model2.mvc.service.user.UserService;
 @Controller
 @RequestMapping("/product/*")
 public class ProductRestController {
-
 	
 	///Field
 	@Autowired
@@ -57,23 +57,38 @@ public class ProductRestController {
 	//@Value("#{commonProperties['pageSize'] ?: 2}")
 	int pageSize;
 	
-	//@RequestMapping("/addProductView.do")
-	@RequestMapping( value="json/getProduct" ,  method=RequestMethod.GET )
-	public Map getProduct(@RequestBody  int prodNo,@RequestBody  String tranCode ,   HttpServletRequest request ,   HttpSession session ) throws Exception {
+	@RequestMapping( value="json/getProduct/{prodNo}/{tranCode}" ,  method=RequestMethod.GET )
+	public Product getProduct(@PathVariable  int prodNo, @PathVariable String tranCode,   HttpServletRequest request ,   HttpSession session ) throws Exception {
 
 		System.out.println("getProduct:: prodNo ::: 출력하기 " + prodNo );
-		System.out.println("/user/getProduct : POST");
+		System.out.println("/user/getProduct : get");
+		System.out.println("product ::: 출력하기 " + tranCode );
+
+		Product product  = productService.getProduct(prodNo) ;
+		product.setProTranCode(tranCode)  ;
+		System.out.println("product ::: 출력하기 " + product );
+ 
+		return product;
+	}
+	
+	/*
+	@RequestMapping( value="json/getProduct/{prodNo}/{tranCode}" ,  method=RequestMethod.GET )
+	public Map getProduct(@PathVariable  int prodNo, @PathVariable String tranCode,   HttpServletRequest request ,   HttpSession session ) throws Exception {
+
+		System.out.println("getProduct:: prodNo ::: 출력하기 " + prodNo );
+		System.out.println("/user/getProduct : get");
+		System.out.println("product ::: 출력하기 " + tranCode );
 
 		Product product  = productService.getProduct(prodNo) ;
 		System.out.println("product ::: 출력하기 " + product );
-		
+
 		Map <String,Object>  map = new HashMap<>();
 		map.put("Product" , product ) ;
 		map.put("tranCode" , tranCode ) ;
 
 		return map;
 	}
-
+*/
 	/*
 	 	@RequestMapping(value = "getProduct" ,method=RequestMethod.GET  )
 	public String getProduct(@RequestParam("prodNo" ) int prodNo,@RequestParam("tranCode" ) String tranCode ,  Model model ,  HttpServletRequest request ,   HttpSession session ) throws Exception 
